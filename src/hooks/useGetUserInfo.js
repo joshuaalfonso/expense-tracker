@@ -3,9 +3,8 @@
 
 
 const useGetUserInfo = () => {
-    if (!localStorage.getItem('auth')) return {}
 
-    const {name, profilePhoto, userID, isAuth} = JSON.parse(localStorage.getItem('auth'));
+    const {name, profilePhoto, userID, isAuth} = JSON.parse(localStorage.getItem('auth')) || {};
 
     return {name, profilePhoto, userID, isAuth}
 }
