@@ -6,7 +6,6 @@ import useGetUserInfo from "../../hooks/useGetUserInfo";
 import { useEffect } from "react";
 
 
-
 const Auth = () => {
 
     const navigate = useNavigate();
@@ -32,9 +31,20 @@ const Auth = () => {
 
 
     return (
-        <div className="">
-            <p>Sign in to google to continue</p>
-            <button onClick={signInWithGoogle}> Sign in with google </button>
+        <div className="h-full px-4 disply flex flex-col items-center justify-center">
+            <h1 className="text-white">Expense tracker by skadoosh!</h1>
+            <img 
+                src="login-illustration.png" 
+                alt="login"
+                width={'100%'}
+            />
+            <button
+                className="w-full text-white rounded p-2 flex border-solid border-2 border-white/10"
+                onClick={signInWithGoogle}
+            > 
+                <box-icon type='logo' name='google' color="white"></box-icon>
+                <span className="flex-1">Sign in with google </span>
+            </button>
         </div>
     )
 }
