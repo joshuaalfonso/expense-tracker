@@ -22,9 +22,9 @@ const Header = () => {
 
     return (
         <header className="p-4 flex justify-between items-center">
-            <box-icon name="moon" size="sm" color="white" animation='tada-hover'></box-icon>
+            <i className='bx bx-moon bx-tada-hover text-white text-xl cursor-pointer'></i>
             <h1 className="text-base text-white uppercase">Expenses</h1>
-            <box-icon name="log-out" size="sm" color="white" onClick={signUserOut}></box-icon>
+            <i className='bx bx-log-out text-white text-xl cursor-pointer' onClick={signUserOut}></i>
         </header>
     )
 }

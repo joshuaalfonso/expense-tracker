@@ -29,15 +29,34 @@ export const useGetTransactions = () => {
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const id = doc.id;
+                    const createdAt = data.createdAt.toDate();
 
-                    docs.push({...data, id})
+                    docs.push({...data, id, createdAt})          
+                    totalExpenses += +data.transactionAmount;
 
-                    if (data.transactionType === 'expense') {
-                        totalExpenses += +data.transactionAmount;
-                    }
                 })
 
-                setTransactions(docs);
+
+                 // Group transactions by day
+                const grouped = docs.reduce((acc, transaction) => {
+                    const date = transaction.createdAt; // Now this is a Date object
+                    const day = date.toLocaleDateString(); // Get date string (e.g., "10/24/2024")
+
+                    if (!acc[day]) {
+                    acc[day] = []; // Create an array for the day if it doesn't exist
+                    }
+                    acc[day].push(transaction); // Add the transaction to the day's array
+                    return acc;
+                }, {});
+
+                const groupedArray = Object.entries(grouped).map(([day, transactions]) => ({
+                    day,
+                    transactions,
+                  }));
+
+                // console.log(groupedArray)
+
+                setTransactions(groupedArray.reverse());
                 setTransactionsTotal(totalExpenses);
             })
             
