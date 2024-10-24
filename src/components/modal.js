@@ -12,7 +12,7 @@ const Modal = ({ open, onClose, children }) => {
             <motion.div 
                 initial={{ y: 1000 }}
                 animate={{ y: 0 }}
-                className="bg-zinc-800 p-5 w-full rounded" 
+                className="bg-white p-5 w-full rounded" 
                 onClick={(e) => e.stopPropagation()}
             >
                 {children}

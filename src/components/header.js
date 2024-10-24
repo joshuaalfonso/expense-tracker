@@ -21,14 +21,14 @@ const Header = () => {
 
     return (
         <header className="p-4 flex justify-between items-center">
-            <i className='bx bx-moon bx-tada-hover text-white text-xl cursor-pointer'></i>
+            <i className='bx bx-moon bx-tada-hover text-black text-xl cursor-pointer'></i>
             <h1 
             animate={{x: 20}}
-                className="text-base text-white uppercase"
+                className="text-md text-black uppercase font-semibold"
             >
                 Expenses
             </h1>
-            <i className='bx bx-log-out text-white text-xl cursor-pointer' onClick={signUserOut}></i>
+            <i className='bx bx-log-out text-black text-xl cursor-pointer' onClick={signUserOut}></i>
         </header>
     )
 }
