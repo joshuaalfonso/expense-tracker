@@ -29,11 +29,13 @@ export const useGetTransactions = () => {
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const id = doc.id;
+
+                    if (!data.createdAt) return;
+   
                     const createdAt = data.createdAt.toDate();
 
                     docs.push({...data, id, createdAt})          
                     totalExpenses += +data.transactionAmount;
-
                 })
 
 

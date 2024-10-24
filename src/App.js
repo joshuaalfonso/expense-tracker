@@ -7,7 +7,7 @@ import ExpenseTracker from './pages/expense-tracker/expense-tracker';
 function App() {
   return (
     <div className="bg-zinc-800 min-h-dvh">
-      <div className='bg-zinc-900 w-full md:max-w-md mx-auto h-dvh relative'>
+      <div className='bg-zinc-900 w-full md:max-w-md mx-auto min-h-dvh overflow-auto relative'>
 
       <Router>
         <Routes>

@@ -16,14 +16,27 @@ const ExpenseTracker = () => {
     // const [transactionType, setTransactionType] = useState('expense');
 
     const [open, setOpen] = useState(false);
+    const [pending, setPending] = useState(false);
 
     const onSubmit = (e) => {
         e.preventDefault();
+
+        setPending(!pending);
+
         addTransaction({
             description, 
             transactionAmount, 
-            // transactionType
+        }).then(
+            response => {
+                console.log(response)
+            }, err => {
+                console.log(err)
+            }
+        ).finally(() => {
+            setOpen(false)
+            setPending(false);
         });
+
     };
     
 
@@ -72,9 +85,12 @@ const ExpenseTracker = () => {
 
                             <button 
                                 type="submit"
-                                className="w-full inline-flex cursor-pointer items-center justify-center gap-1 rounded border border-slate-300 bg-gradient-to-b from-slate-50 to-slate-200 px-4 py-2 font-semibold hover:opacity-90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-300 focus-visible:ring-offset-2 active:opacity-100 mb-3"
+                                className={`w-full  cursor-pointer text-center rounded border border-slate-300 bg-gradient-to-b from-slate-50 to-slate-200 px-4 h-10 font-semibold hover:opacity-80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-300 focus-visible:ring-offset-2 active:opacity-100 mb-3 ${pending ? ' opacity-30 pointer-events-none' : ''}`}
                             >
-                                Add transaction
+                                {pending ? (
+                                    <i className='bx bx-loader bx-spin text-xl '></i>
+                                )  : 'Submit'}
+                                
                             </button>
 
                         </form>
@@ -112,7 +128,9 @@ const ExpenseTracker = () => {
                             
                             <li key={index} className="bg-zinc-800 rounded mb-3 flex flex-col px-4 py-4">
 
-                                <h3 className="text-white/40 mb-3 text-sm"> { format(createdAt, "MMMM dd, yyyy") } </h3>
+                                <h3 className="text-white/40 mb-3 text-sm"> 
+                                { format(createdAt, "MMMM dd, yyyy") || '' } 
+                                </h3>
 
                                 <div className="flex">
                                     <div className="text-white flex flex-1 gap-2">
