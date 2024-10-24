@@ -47,20 +47,13 @@ const ExpenseTracker = () => {
             >
                 <div className="container">
 
-                    <Modal open={open} onClose={() => setOpen(false)}> 
+                    {open && (
+                        <Modal open={open} onClose={() => setOpen(false)}> 
                         <form className="add-transaction px-4" onSubmit={onSubmit}>
-                            
-                            {/* <input 
-                                type="text" 
-                                className="bg-zinc-800 px-2 py-2 outline-none w-full text-white rounded-lg border-1 transition-colors duration-100 border-solid focus:border-[#596A95] border-white mb-3"
-                                placeholder="Description" 
-                                required 
-                                onChange={(e) => setDescription(e.target.value)}
-                            ></input> */}
                             
                             <input 
                                 type="number" 
-                                className="text-center bg-zinc-800 px-2 py-2 outline-none w-full text-white rounded-lg border-1 transition-colors duration-100 border-solid focus:border-[#596A95] border-white mb-3"
+                                className="text-center text-2xl bg-zinc-800 px-2 py-2 outline-none w-full text-white rounded-lg border-1 transition-colors duration-100 border-solid focus:border-[#596A95] border-white mb-3"
                                 placeholder="Amount" 
                                 required
                                 onChange={(e) => setTransactionAmount(e.target.value)}
@@ -94,7 +87,10 @@ const ExpenseTracker = () => {
                             </button>
 
                         </form>
-                    </Modal>
+                        </Modal>
+                    )}
+
+                    
 
                     <button
                         onClick={() => setOpen(true)} 
@@ -103,7 +99,7 @@ const ExpenseTracker = () => {
                         < i className="bx bx-plus" />
                     </button>
 
-                    <Header />
+                    <Header/>
 
                     <div className="summary">
 
@@ -120,7 +116,7 @@ const ExpenseTracker = () => {
             </div>
             
             <div className="transactions px-4">
-                <ul>
+                <ul className="">
                     {/* {transactions.map((transaction, index) => {
                         const {description, transactionAmount, createdAt} = transaction;
 
@@ -168,7 +164,7 @@ const ExpenseTracker = () => {
                                             </div>
                                             <div>
                                                 <h1 className="text-white"> {transaction.description.title} </h1>
-                                                <p className="text-white/40 text-sm"> { format(transaction.createdAt, "H:mma") } </p>
+                                                <p className="text-white/40 text-sm"> { format(transaction.createdAt, "H:mm a") } </p>
                                             </div>
                                         </div>
 
