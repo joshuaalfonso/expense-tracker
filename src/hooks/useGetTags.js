@@ -5,12 +5,12 @@
 
 const tags = [
     {
-        emoji: '🍲',
-        title: 'Food'
+        emoji: '🏠',
+        title: 'Housing'
     },
     {
-        emoji: '🏠',
-        title: 'Rent'
+        emoji: '🍲',
+        title: 'Food'
     },
     {
         emoji: '💊',
@@ -18,19 +18,47 @@ const tags = [
     },
     {
         emoji: '👕',
-        title: 'Clothes'
-    },
-    {
-        emoji: '🥕',
-        title: 'Groceries'
+        title: 'Personal'
     },
     {
         emoji: '📚',
         title: 'Education'
     },
     {
-        emoji: '⛽',
-        title: 'Gas'
+        emoji: '🚎',
+        title: 'Transport'
+    },
+    {
+        emoji: '🏪',
+        title: 'Business'
+    },
+    {
+        emoji: '☕',
+        title: 'Coffee'
+    },
+    {
+        emoji: '🎁',
+        title: 'Gift'
+    },
+    {
+        emoji: '💰',
+        title: 'Savings'
+    },
+    {
+        emoji: '✈️',
+        title: 'Travel'
+    },
+    {
+        emoji: '📽️',
+        title: 'Entertainment'
+    },
+    {
+        emoji: '💳',
+        title: 'Debt'
+    },
+    {
+        emoji: '❔',
+        title: 'Others'
     },
 ]
 

@@ -7,8 +7,9 @@ import ExpenseTracker from './pages/expense-tracker/expense-tracker';
 
 function App() {
   return (
-    <div className="bg-[#F5F5F5] min-h-svh">
-      <div className='bg-white w-full md:max-w-md mx-auto min-h-svh overflow-hidden relative'>
+    // bg-[#F5F5F5]
+    <div className="bg-[#F5F5F5] min-h-dvh"> 
+      <div className='bg-white w-full md:max-w-md mx-auto h-dvh overflow-auto relative flex flex-col gap-5'>
 
       <Router>
         <Routes>
