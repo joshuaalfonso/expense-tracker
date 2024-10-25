@@ -13,7 +13,7 @@ const useAddTransaction = () => {
             await addDoc(transactionCollectionRef, {
                 userID: userID,
                 description: description,
-                transactionAmount: transactionAmount,
+                transactionAmount: +transactionAmount,
                 createdAt: serverTimestamp()
             })
 

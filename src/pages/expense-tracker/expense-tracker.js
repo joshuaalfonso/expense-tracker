@@ -19,12 +19,21 @@ const ExpenseTracker = () => {
     // const [transactionType, setTransactionType] = useState('expense');
 
     const [open, setOpen] = useState(false);
+    const [tagsOpen, setTagsOpen] = useState(false);
     const [pending, setPending] = useState(false);
 
     const onSubmit = (e) => {
         e.preventDefault();
 
         setPending(!pending);
+
+        if (!transactionAmount) {
+            return alert('Please input amount')
+        }
+    
+        if (!description) {
+            return alert('Please select a tag')
+        }
 
         addTransaction({
             description, 
@@ -38,6 +47,7 @@ const ExpenseTracker = () => {
         ).finally(() => {
             setOpen(false)
             setPending(false);
+            handleResetForm();
         });
 
     };
@@ -54,6 +64,22 @@ const ExpenseTracker = () => {
     const handleRemoveClick = () => {
         setTransactionAmount((prev) => prev.slice(0, -1));
     };
+
+    const handleTagClick = (tag) => {
+        setDescription(tag);
+        setTagsOpen(false)
+    }
+
+    const handleResetForm = () => {
+        setTransactionAmount('');
+        setDescription(null);
+        setTagsOpen(false);
+    }
+
+    const handleOnClose = () => {
+        setOpen(false);
+        handleResetForm();
+    }
     
 
     return (
@@ -64,7 +90,7 @@ const ExpenseTracker = () => {
                 <div className="container">
 
                     {open && (
-                        <Modal open={open} onClose={() => setOpen(false)}> 
+                        <Modal open={open} onClose={() => handleOnClose()}> 
                         <form className="add-transaction " onSubmit={onSubmit}>
                             
                             {/* <input 
@@ -75,17 +101,57 @@ const ExpenseTracker = () => {
                                 onChange={(e) => setTransactionAmount(e.target.value)}
                             ></input> */}
 
-                            <h1 className="text-center text-6xl font-medium">
+                            <h3 className="text-center text-sm text-[#979797]"> {format(new Date(), 'eee MMM dd, yyyy')} </h3>
+
+                            <h1 className="text-center text-6xl font-medium mb-6">
                                 {transactionAmount || '0'}
                             </h1>
 
 
-                            {description ? (
-                                <div className="text-center">
+                            { description ? (
+                                <div className="mb-8 flex justify-center items-center gap-2 cursor-pointer">
                                     <p> {description.emoji} </p>
-                                    <h1 className="text-black"> {description.title} </h1>
+                                    <h1 className="text-black font-medium"> {description.title} </h1>
+                                    <motion.i 
+                                        className='bx bx-refresh text-2xl' 
+                                        whileHover={{rotate: 180}}
+                                        onClick={() => setTagsOpen(true)}
+                                    ></motion.i>
                                 </div>
-                            ) : <h1 className="text-black mb-8 text-center">Please select a tag</h1>}
+                            ) : <div className="flex items-center justify-center gap-1 mb-8">
+                                    <i className='bx bx-purchase-tag-alt grid place-items-center text-xl '></i>
+                                    <h1 
+                                        className="text-black text-center cursor-pointer"
+                                        onClick={() => setTagsOpen(true)}
+                                    >
+                                        select a tag
+                                    </h1>
+                                </div>
+                            }
+
+
+                            {tagsOpen ? (
+                                <motion.div 
+                                initial={{ y: 1000 }}
+                                animate={{ y: 0 }}
+                                    className="absolute left-0 w-full bg-white bottom-0 h-3/4 py-6"
+                                >
+                                    <ul className="grid grid-cols-4 gap-4 mb-4">
+                                        {tags.map((tag, index) => (
+                                            <motion.li 
+                                                whileHover={{ scale: 1.1 }}
+                                                key={index} 
+                                                className="flex flex-col items-center cursor-pointer" 
+                                                onClick={() => handleTagClick(tag)}
+                                            >
+                                                <p className="text-2xl">{tag.emoji}</p> 
+                                                <h1 className="text-black text-sm">{tag.title}</h1>
+                                            </motion.li>
+                                        ))}
+                                    </ul>
+                                </motion.div>
+                            ) : ''}
+
 
                             {/* <ul className="grid grid-cols-4 gap-4 mb-4">
                                 {tags.map((tag, index) => (
@@ -173,8 +239,18 @@ const ExpenseTracker = () => {
                                 </button>
 
                                 <button className=" p-6 rounded-[30px] text-center text-4xl"></button>
-                                <button className="bg-[#F5F5F5] p-6 rounded-[30px] text-center text-4xl font-light">0</button>
-                                <button className=" p-6 bg-[#F5F5F5] rounded-[30px] text-center text-4xl font-light">.</button>
+
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="0"
+                                    onClick={handleKeypadClick}
+                                />
+
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="."
+                                    onClick={handleKeypadClick}
+                                />
 
                                 
                             </div>
@@ -195,12 +271,14 @@ const ExpenseTracker = () => {
 
                     
 
-                    <button
-                        onClick={() => setOpen(true)} 
-                        className="absolute bottom-20 right-6 bg-zinc-800 px-4 py-3 rounded-full text-white"
-                    >
-                        < i className="bx bx-plus" />
-                    </button>
+                    {!open && (
+                        <button
+                            onClick={() => setOpen(true)} 
+                            className="absolute bottom-20 right-6 bg-zinc-800 px-4 py-3 rounded-full text-white"
+                        >
+                            < i className="bx bx-plus" />
+                        </button>
+                    )}
 
                     <Header/>
 
@@ -266,7 +344,7 @@ const ExpenseTracker = () => {
                                                 {transaction.description.emoji} 
                                             </div>
                                             <div>
-                                                <h1 className="text-black font-semibold"> {transaction.description.title} </h1>
+                                                <h1 className="text-black font-medium"> {transaction.description.title} </h1>
                                                 <p className="text-[#979797] text-sm"> { format(transaction.createdAt, "H:mm a") } </p>
                                             </div>
                                         </div>
@@ -282,9 +360,9 @@ const ExpenseTracker = () => {
                 </ul>
             </div>
 
-            <nav className="absolute bg-white bottom-0 left-0 w-full py-3 px-10 shadow">
+            {/* <nav className="absolute bg-white bottom-0 left-0 w-full py-3 px-10 shadow">
                 <NavBar />
-            </nav>
+            </nav> */}
         </> 
     )
 }
