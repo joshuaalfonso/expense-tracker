@@ -4,6 +4,7 @@ import Auth from './pages/auth';
 import ExpenseTracker from './pages/expense-tracker/expense-tracker';
 
 
+
 function App() {
   return (
     <div className="bg-[#F5F5F5] min-h-dvh">
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path='/' exact element={<Auth />} />
           <Route path='/expense-tracker' element={<ExpenseTracker />} />
+          
         </Routes>
       </Router>
 

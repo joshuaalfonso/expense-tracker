@@ -5,6 +5,9 @@ import Header from "../../components/header";
 import Modal from "../../components/modal";
 import tags from "../../hooks/useGetTags";
 import { format } from "date-fns";
+import { motion } from "framer-motion";
+import KeypadButton from "../../components/keypadButton";
+import NavBar from "../../components/navbar";
 
 
 const ExpenseTracker = () => {
@@ -12,7 +15,7 @@ const ExpenseTracker = () => {
     const { transactions, transactionsTotal } = useGetTransactions();
     
     const [description, setDescription] = useState(null);
-    const [transactionAmount, setTransactionAmount] = useState(0);
+    const [transactionAmount, setTransactionAmount] = useState('');
     // const [transactionType, setTransactionType] = useState('expense');
 
     const [open, setOpen] = useState(false);
@@ -38,6 +41,19 @@ const ExpenseTracker = () => {
         });
 
     };
+
+
+        // Function to handle button clicks
+    const handleKeypadClick = (value) => {
+        // If the value is a number or ".", update the input
+        if (!isNaN(value) || value === ".") {
+            setTransactionAmount((prev) => prev + value);
+        }
+    };
+
+    const handleRemoveClick = () => {
+        setTransactionAmount((prev) => prev.slice(0, -1));
+    };
     
 
     return (
@@ -49,42 +65,129 @@ const ExpenseTracker = () => {
 
                     {open && (
                         <Modal open={open} onClose={() => setOpen(false)}> 
-                        <form className="add-transaction px-4" onSubmit={onSubmit}>
+                        <form className="add-transaction " onSubmit={onSubmit}>
                             
-                            <input 
+                            {/* <input 
                                 type="number" 
                                 className="text-center text-2xl bg-white px-2 py-2 outline-none w-full text-black rounded-lg border-1 transition-colors duration-100 border-solid focus:border-[#596A95] border-white mb-3"
                                 placeholder="Amount" 
                                 required
                                 onChange={(e) => setTransactionAmount(e.target.value)}
-                            ></input>
+                            ></input> */}
+
+                            <h1 className="text-center text-6xl font-medium">
+                                {transactionAmount || '0'}
+                            </h1>
 
 
                             {description ? (
-                                <div className="text-center mb-4">
+                                <div className="text-center">
                                     <p> {description.emoji} </p>
                                     <h1 className="text-black"> {description.title} </h1>
                                 </div>
-                            ) : <h1 className="text-black mb-4 text-center">Please select a tag</h1>}
+                            ) : <h1 className="text-black mb-8 text-center">Please select a tag</h1>}
 
-                            <ul className="grid grid-cols-4 gap-4 mb-4">
+                            {/* <ul className="grid grid-cols-4 gap-4 mb-4">
                                 {tags.map((tag, index) => (
-                                    <li key={index} className="flex flex-col items-center" onClick={() => setDescription(tag)}>
+                                    <motion.li 
+                                        whileHover={{ scale: 1.1 }}
+                                        key={index} 
+                                        className="flex flex-col items-center cursor-pointer" 
+                                        onClick={() => setDescription(tag)}
+                                    >
                                         <p className="text-2xl">{tag.emoji}</p> 
                                         <h1 className="text-black text-sm">{tag.title}</h1>
-                                    </li>
+                                    </motion.li>
                                 ))}
-                            </ul>
+                            </ul> */}
 
-                            <button 
+                            <div className=" grid grid-cols-4  mb-4 gap-1">
+
+                                <KeypadButton 
+                                    value="1"
+                                    background="#F5F5F5"
+                                    onClick={handleKeypadClick}
+                                />
+
+                                <KeypadButton 
+                                    value="2"
+                                    background="#F5F5F5"
+                                    onClick={handleKeypadClick}
+                                />
+
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="3"
+                                    onClick={handleKeypadClick}
+                                />
+
+                                {/* <KeypadButton 
+                                    value="⌫"
+                                    background="#fee2e2"
+                                    // onClick={handleKeypadClick}
+                                /> */}
+
+                                <div 
+                                    className="bg-red-100 p-6 rounded-[30px] text-center text-4xl"
+                                    onClick={handleRemoveClick }
+                                ><i className='bx bx-x'></i></div>
+
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="4"
+                                    onClick={handleKeypadClick}
+                                />
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="5"
+                                    onClick={handleKeypadClick}
+                                />
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="6"
+                                    onClick={handleKeypadClick}
+                                />
+
+                                <button 
+                                    className="bg-blue-100 p-6 rounded-[30px] text-center text-4xl"
+                                ><i className='bx bx-calendar font-light'></i></button>
+
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="7"
+                                    onClick={handleKeypadClick}
+                                />
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="8"
+                                    onClick={handleKeypadClick}
+                                />
+                                <KeypadButton 
+                                    background="#F5F5F5"
+                                    value="9"
+                                    onClick={handleKeypadClick}
+                                />
+
+                                <button className="bg-black text-white p-6 rounded-[30px] text-center text-4xl font-light row-span-2 grid place-items-center">
+                                    <i className='bx bx-check'></i>
+                                </button>
+
+                                <button className=" p-6 rounded-[30px] text-center text-4xl"></button>
+                                <button className="bg-[#F5F5F5] p-6 rounded-[30px] text-center text-4xl font-light">0</button>
+                                <button className=" p-6 bg-[#F5F5F5] rounded-[30px] text-center text-4xl font-light">.</button>
+
+                                
+                            </div>
+
+                            {/* <button 
                                 type="submit"
-                                className={`w-full  cursor-pointer text-center rounded border bg-[#FF745D] text-white px-4 h-10 font-semibold   mb-3 ${pending ? ' opacity-30 pointer-events-none' : ''}`}
+                                className={`w-full  cursor-pointer text-center rounded border bg-black text-white px-4 h-10 font-semibold   mb-3 ${pending ? ' opacity-30 pointer-events-none' : ''}`}
                             >
                                 {pending ? (
                                     <i className='bx bx-loader bx-spin text-xl '></i>
                                 )  : 'Submit'}
                                 
-                            </button>
+                            </button> */}
 
                         </form>
                         </Modal>
@@ -94,7 +197,7 @@ const ExpenseTracker = () => {
 
                     <button
                         onClick={() => setOpen(true)} 
-                        className="absolute bottom-6 right-6 bg-zinc-800 px-4 py-3 rounded-full text-white"
+                        className="absolute bottom-20 right-6 bg-zinc-800 px-4 py-3 rounded-full text-white"
                     >
                         < i className="bx bx-plus" />
                     </button>
@@ -163,7 +266,7 @@ const ExpenseTracker = () => {
                                                 {transaction.description.emoji} 
                                             </div>
                                             <div>
-                                                <h1 className="text-black"> {transaction.description.title} </h1>
+                                                <h1 className="text-black font-semibold"> {transaction.description.title} </h1>
                                                 <p className="text-[#979797] text-sm"> { format(transaction.createdAt, "H:mm a") } </p>
                                             </div>
                                         </div>
@@ -178,6 +281,10 @@ const ExpenseTracker = () => {
                     ))}
                 </ul>
             </div>
+
+            <nav className="absolute bg-white bottom-0 left-0 w-full py-3 px-10 shadow">
+                <NavBar />
+            </nav>
         </> 
     )
 }
