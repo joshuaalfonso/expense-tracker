@@ -7,7 +7,7 @@ import tags from "../../hooks/useGetTags";
 import { format } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import KeypadButton from "../../components/keypadButton";
-
+import { NumericFormat } from 'react-number-format';
 
 const ExpenseTracker = () => {
     const { addTransaction } = useAddTransaction();
@@ -100,7 +100,9 @@ const ExpenseTracker = () => {
                     <h3 className="text-center text-sm text-[#979797]"> {format(new Date(), 'eee MMM dd, yyyy')} </h3>
 
                     <h1 className="text-center text-6xl font-medium mb-6">
-                        {transactionAmount || '0'}
+                        {/* {transactionAmount.toLocaleString() || '0'} */}
+
+                        <NumericFormat value={transactionAmount || 0} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
                     </h1>
 
 
@@ -291,7 +293,10 @@ const ExpenseTracker = () => {
             <section className="px-4 py-20 flex flex-col justify-center items-center">
 
                 <p className="text-[#979797] text-sm">Spent this month</p>
-                <h1 className="text-5xl text-[#FF745D] font-medium">₱ - {transactionsTotal}.00</h1>
+                <h1 className="text-5xl text-[#FF745D] font-medium">
+                    {/* ₱ - {transactionsTotal} .00 */}
+                    <NumericFormat value={transactionsTotal} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
+                </h1>
 
             </section>
             
@@ -301,10 +306,14 @@ const ExpenseTracker = () => {
 
                     {transactions.map((days, index) => (
                         <li key={index} className="mb-6"> 
-                            <div>
-                                <h1 className="text-[#979797] text-sm mb-3">
+                            <div className="flex items-center justify-between mb-3">
+                                <span className="text-[#979797] text-sm">
                                     {format(days.day, 'MMM dd, yyyy')} 
-                                </h1>
+                                </span>
+                                <span className="text-[#979797] text-sm">
+                                    {/* ₱ {days.totalAmount} */}
+                                    <NumericFormat value={days.totalAmount} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
+                                </span>
                             </div>
                             <ul className="flex flex-col gap-2">
                                 {days.transactions.map((transaction, index) => (
@@ -321,7 +330,7 @@ const ExpenseTracker = () => {
                                         </div>
 
                                         <span className="text-[#FF745D] font-semibold grid place-items-center">
-                                            - {transaction.transactionAmount} ₱
+                                            <NumericFormat value={transaction.transactionAmount} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
                                         </span> 
                                     </li>
                                 ))}

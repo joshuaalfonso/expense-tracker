@@ -40,23 +40,39 @@ export const useGetTransactions = () => {
 
 
                  // Group transactions by day
-                const grouped = docs.reduce((acc, transaction) => {
+                const grouped =  docs.reduce((acc, transaction) => {
                     const date = transaction.createdAt; // Now this is a Date object
                     const day = date.toLocaleDateString(); // Get date string (e.g., "10/24/2024")
+                    // let dayAmount = 0;
 
+                     // Create an array for the day if it doesn't exist
                     if (!acc[day]) {
-                    acc[day] = []; // Create an array for the day if it doesn't exist
+                    acc[day] = {
+                        transactions: [], // Array of transactions
+                        totalAmount: 0,   // Total amount for the day
+                    };
                     }
-                    acc[day].push(transaction); // Add the transaction to the day's array
+
+                    acc[day].transactions.push(transaction); // Add transaction
+                    acc[day].totalAmount += +transaction.transactionAmount; // Assuming `transaction.amount` is the amount to be summed
                     return acc;
                 }, {});
+                
 
-                const groupedArray = Object.entries(grouped).map(([day, transactions]) => ({
+                // console.log(grouped)
+
+                // const groupedArray = Object.entries(grouped).map(([day]) => ({
+                //     day,
+                //     transactions,
+                // }));
+
+                // Convert to an array directly
+                const groupedArray = Object.keys(grouped).map(day => ({
                     day,
-                    transactions,
-                  }));
+                    ...grouped[day]
+                }));
 
-                // console.log(groupedArray)
+                console.log(groupedArray)
 
                 setTransactions(groupedArray.reverse());
                 setTransactionsTotal(totalExpenses);

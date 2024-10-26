@@ -26,7 +26,7 @@ const Auth = () => {
     useEffect(() => {
         if (isAuth) {
             navigate('expense-tracker')
-        }
+        } 
     })
 
 
