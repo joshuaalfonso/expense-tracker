@@ -18,10 +18,13 @@ const useAddTransaction = () => {
             })
 
             return { success: true, message: 'Successfully added!' };
-        } catch(error) {
+        } 
+        
+        catch(error) {
             return { success: false, message: 'Failed to add transaction.' };
-        }
-
+        } 
+        
+       
     }
 
     return {addTransaction}

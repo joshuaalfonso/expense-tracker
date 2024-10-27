@@ -8,14 +8,16 @@ import { format } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import KeypadButton from "../../components/keypadButton";
 import { NumericFormat } from 'react-number-format';
+import SkeletonLoader from "../../components/skeletonLoader";
 
 const ExpenseTracker = () => {
     const { addTransaction } = useAddTransaction();
-    const { transactions, transactionsTotal } = useGetTransactions();
+    const { transactions, transactionsTotal, loading } = useGetTransactions();
     
     const [description, setDescription] = useState(null);
     const [transactionAmount, setTransactionAmount] = useState('');
-    // const [transactionType, setTransactionType] = useState('expense');
+
+    // console.log(loading)
 
     const [open, setOpen] = useState(false);
     const [tagsOpen, setTagsOpen] = useState(false);
@@ -289,60 +291,69 @@ const ExpenseTracker = () => {
             <section>
                 <Header/>
             </section>
+            
 
             <section className="px-4 py-20 flex flex-col justify-center items-center">
 
-                <p className="text-[#979797] text-sm">Spent this month</p>
+                <p className="text-[#979797] text-sm">Spent this month </p>
+
+                { loading ? (
+                    <span className="size-12 block bg-[#F5F5F5] rounded w-40 animate-pulse"></span>
+                ) :  
                 <h1 className="text-5xl text-[#FF745D] font-medium">
-                    {/* ₱ - {transactionsTotal} .00 */}
                     <NumericFormat value={transactionsTotal} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
-                </h1>
+                </h1> }
 
             </section>
             
-            {/* transaction Section */}
+            {/* asdsadasd */}
             <section className="p-4 flex flex-col flex-1 overflow-hidden">
-                <ul className="h-full overflow-auto bg-white">
 
-                    {transactions.map((days, index) => (
-                        <li key={index} className="mb-6"> 
-                            <div className="flex items-center justify-between mb-3">
-                                <span className="text-[#979797] text-sm">
-                                    {format(days.day, 'MMM dd, yyyy')} 
-                                </span>
-                                <span className="text-[#979797] text-sm">
-                                    {/* ₱ {days.totalAmount} */}
-                                    <NumericFormat value={days.totalAmount} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
-                                </span>
-                            </div>
-                            <ul className="flex flex-col gap-2">
-                                {days.transactions.map((transaction, index) => (
-                                    <li key={index} className="bg-[#F5F5F5] flex rounded p-4">
 
-                                        <div className="flex flex-1 gap-3">
-                                            <div className="w-12 grid place-items-center text-3xl"> 
-                                                {transaction.description.emoji} 
+                { !loading ? (
+                    <ul className="h-full overflow-auto bg-white">
+
+                        {transactions.map((days, index) => (
+                            <li key={index} className="mb-6"> 
+                                <div className="flex items-center justify-between mb-3">
+                                    <span className="text-[#979797] text-sm">
+                                        {format(days.day, 'MMM dd, yyyy')} 
+                                    </span>
+                                    <span className="text-[#979797] text-sm">
+                                        {/* ₱ {days.totalAmount} */}
+                                        <NumericFormat value={days.totalAmount} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
+                                    </span>
+                                </div>
+                                <ul className="flex flex-col gap-2">
+                                    {days.transactions.map((transaction, index) => (
+                                        <li key={index} className="bg-[#F5F5F5] flex rounded p-4">
+
+                                            <div className="flex flex-1 gap-3">
+                                                <div className="w-12 grid place-items-center text-3xl"> 
+                                                    {transaction.description.emoji} 
+                                                </div>
+                                                <div>
+                                                    <h1 className="text-black font-medium"> {transaction.description.title} </h1>
+                                                    <p className="text-[#979797] text-sm"> { format(transaction.createdAt, "h:mm a") } </p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h1 className="text-black font-medium"> {transaction.description.title} </h1>
-                                                <p className="text-[#979797] text-sm"> { format(transaction.createdAt, "H:mm a") } </p>
-                                            </div>
-                                        </div>
 
-                                        <span className="text-[#FF745D] font-semibold grid place-items-center">
-                                            <NumericFormat value={transaction.transactionAmount} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
-                                        </span> 
-                                    </li>
-                                ))}
-                            </ul>
-                        </li>
-                    ))}
-                </ul>
+                                            <span className="text-[#FF745D] font-semibold grid place-items-center">
+                                                <NumericFormat value={transaction.transactionAmount} displayType={'text'} thousandSeparator={true} prefix={'₱ '} />
+                                            </span> 
+                                        </li>
+                                    ))}
+                                </ul>
+                            </li>
+                        ))}
+                    </ul>
+                ) : 
+                    <SkeletonLoader />
+                }
+
+
             </section>
 
-            {/* <nav className="absolute bg-white bottom-0 left-0 w-full py-3 px-10 shadow">
-                <NavBar />
-            </nav> */}
         </> 
     )
 }

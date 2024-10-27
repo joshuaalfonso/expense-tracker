@@ -7,14 +7,16 @@ import useGetUserInfo from "./useGetUserInfo";
 export const useGetTransactions = () => {
     const [transactions, setTransactions] = useState([]);
     const [transactionsTotal, setTransactionsTotal] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     const transactionCollectionRef = collection(db, 'transactions');
     const {userID} = useGetUserInfo();
 
     const getTransactions = async () => {
         let unsubscribe;
-        try {
 
+        try {
+            
             const queryTransactions = query(
                 transactionCollectionRef, 
                 where('userID', '==', userID),
@@ -61,18 +63,15 @@ export const useGetTransactions = () => {
 
                 // console.log(grouped)
 
-                // const groupedArray = Object.entries(grouped).map(([day]) => ({
-                //     day,
-                //     transactions,
-                // }));
-
                 // Convert to an array directly
                 const groupedArray = Object.keys(grouped).map(day => ({
                     day,
                     ...grouped[day]
                 }));
 
-                console.log(groupedArray)
+                // console.log(groupedArray)
+
+                setLoading(false);
 
                 setTransactions(groupedArray.reverse());
                 setTransactionsTotal(totalExpenses);
@@ -82,16 +81,17 @@ export const useGetTransactions = () => {
 
         catch(err) {
             console.error(err);
+            setLoading(false);
         }
 
         return () => unsubscribe(); 
     }
 
     useEffect(() => {
-        getTransactions()
+        getTransactions();
     }, [])
 
-    return { transactions, transactionsTotal } 
+    return { transactions, transactionsTotal, loading } 
 }
 
 export default useGetTransactions;
