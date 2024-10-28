@@ -11,6 +11,7 @@ import { NumericFormat } from 'react-number-format';
 import SkeletonLoader from "../../components/skeletonLoader";
 
 const ExpenseTracker = () => {
+    
     const { addTransaction } = useAddTransaction();
     const { transactions, transactionsTotal, loading } = useGetTransactions();
     

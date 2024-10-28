@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Auth from './pages/auth';
 import ExpenseTracker from './pages/expense-tracker/expense-tracker';
+import ProtectedRoutes from './protectedRoutes';
 
 
 
@@ -14,7 +15,10 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' exact element={<Auth />} />
-          <Route path='/expense-tracker' element={<ExpenseTracker />} />
+
+          <Route element={<ProtectedRoutes/>}>
+            <Route path='/expense-tracker' element={<ExpenseTracker />} />
+          </Route>
           
         </Routes>
       </Router>

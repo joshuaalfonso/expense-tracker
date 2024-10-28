@@ -29,7 +29,6 @@ const Auth = () => {
         } 
     })
 
-
     return (
         <div className="h-screen px-4 disply flex flex-col items-center justify-center gap-4 bg-white">
            
@@ -58,6 +57,7 @@ const Auth = () => {
             </button>
         </div>
     )
+    
 }
 
 export default Auth;
